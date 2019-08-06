@@ -1,14 +1,14 @@
-import React from "react"
-import { Link } from "gatsby"
-import gray from "gray-percentage"
-import SearchIcon from "react-icons/lib/md/search"
-import "typeface-rochester"
-import "typeface-josefin-sans"
-import "typeface-josefin-slab"
+import React from 'react';
+import { Link } from 'gatsby';
+import gray from 'gray-percentage';
+import SearchIcon from 'react-icons/lib/md/search';
+import 'typeface-rochester';
+import 'typeface-josefin-sans';
+import 'typeface-josefin-slab';
 
-import { rhythm, scale } from "../utils/typography"
-import constants from "../utils/constants"
-import Container from "../components/container"
+import { rhythm, scale } from '../utils/typography';
+import constants from '../utils/constants';
+import Container from '../components/container';
 
 class DefaultLayout extends React.Component {
   render() {
@@ -16,24 +16,24 @@ class DefaultLayout extends React.Component {
       <div>
         <header
           css={{
-            background: constants.paleYellow,
+            background: constants.paleYellow
           }}
         >
           <div
             css={{
               height: rhythm(1.5),
               margin: `0 auto`,
-              maxWidth: 1024,
+              maxWidth: 1024
             }}
           >
             <span
               css={{
-                marginLeft: rhythm(1 / 2),
+                marginLeft: rhythm(1 / 2)
               }}
             >
               <SearchIcon
                 css={{
-                  fontSize: rhythm(1),
+                  fontSize: rhythm(1)
                 }}
               />
               {` `}
@@ -45,7 +45,7 @@ class DefaultLayout extends React.Component {
               css={{
                 float: `right`,
                 marginRight: rhythm(1),
-                lineHeight: rhythm(1.5),
+                lineHeight: rhythm(1.5)
               }}
             >
               Login
@@ -62,7 +62,7 @@ class DefaultLayout extends React.Component {
                   margin: 0,
                   fontFamily: `Rochester, serif`,
                   float: `right`,
-                  fontDisplay: `block`,
+                  fontDisplay: `block`
                 }}
               >
                 Umami
@@ -72,7 +72,7 @@ class DefaultLayout extends React.Component {
                   color: gray(10),
                   fontFamily: `"Josefin Sans", sans-serif`,
                   marginBottom: 0,
-                  float: `right`,
+                  float: `right`
                 }}
               >
                 Food Magazine
@@ -88,9 +88,9 @@ class DefaultLayout extends React.Component {
                 bottom: rhythm(1.5),
                 textDecoration: `none`,
                 fontSize: scale(0.25).fontSize,
-                ":hover": {
-                  textDecoration: `underline`,
-                },
+                ':hover': {
+                  textDecoration: `underline`
+                }
               }}
             >
               Recipes
@@ -121,8 +121,8 @@ class DefaultLayout extends React.Component {
           </Container>
         </footer>
       </div>
-    )
+    );
   }
 }
 
-export default DefaultLayout
+export default DefaultLayout;

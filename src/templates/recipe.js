@@ -1,11 +1,11 @@
-import { graphql } from "gatsby"
-import React from "react"
-import Img from "gatsby-image"
+import { graphql } from 'gatsby';
+import React from 'react';
+import Img from 'gatsby-image';
 
-import Layout from "../layouts"
-import Container from "../components/container"
-import { rhythm } from "../utils/typography"
-import constants from "../utils/constants"
+import Layout from '../layouts';
+import Container from '../components/container';
+import { rhythm } from '../utils/typography';
+import constants from '../utils/constants';
 
 const RecipeTemplate = ({ data }) => (
   <Layout>
@@ -14,26 +14,27 @@ const RecipeTemplate = ({ data }) => (
         background: constants.paleYellow,
         padding: rhythm(1.5),
         paddingTop: 0,
-        marginBottom: rhythm(3),
+        marginBottom: rhythm(3)
       }}
     >
       <Container>
-        <h1>{data.recipes.title}</h1>
+        <h1>{data.recipe.title}</h1>
         <p>
-          <strong>Category:</strong> {data.recipes.relationships.category.name}
+          <strong>Category:</strong>{' '}
+          {data.recipe.relationships.field_recipe_category[0].name}
         </p>
         <div
           css={{
             display: `flex`,
             justifyContent: `space-between`,
-            marginBottom: rhythm(2),
+            marginBottom: rhythm(2)
           }}
         >
           <div css={{ width: `calc(1/2*100% - (1 - 1/2) * ${rhythm(2)})` }}>
             <Img
               fluid={
-                data.recipes.relationships.image.relationships.imageFile
-                  .localFile.childImageSharp.fluid
+                data.recipe.relationships.field_image.localFile.childImageSharp
+                  .fluid
               }
             />
           </div>
@@ -41,15 +42,15 @@ const RecipeTemplate = ({ data }) => (
             <div>
               <strong>Preparation time:</strong>
             </div>
-            <div>{data.recipes.preparationTime} minutes</div>
+            <div>{data.recipe.field_preparation_time} minutes</div>
             <div>
               <strong>Cooking time:</strong>
             </div>
-            <div>{data.recipes.totalTime} minutes</div>
+            <div>{data.recipe.field_cooking_time} minutes</div>
             <div>
               <strong>Difficulty:</strong>
             </div>
-            <div>{data.recipes.difficulty}</div>
+            <div>{data.recipe.field_difficulty}</div>
           </div>
         </div>
         <div css={{ background: `white`, padding: rhythm(1.5) }}>
@@ -58,52 +59,49 @@ const RecipeTemplate = ({ data }) => (
             <div css={{ width: `calc(1/2*100% - (1 - 1/2) * ${rhythm(1.5)})` }}>
               <h3>Ingredients</h3>
               <ul>
-                {data.recipes.ingredients &&
-                  data.recipes.ingredients.map((ing, index) => (
+                {data.recipe.field_ingredients &&
+                  data.recipe.field_ingredients.map((ing, index) => (
                     <li key={index}>{ing}</li>
                   ))}
               </ul>
             </div>
             <div css={{ width: `calc(1/2*100% - (1 - 1/2) * ${rhythm(1.5)})` }}>
               <h3>Method</h3>
-              <ul>
-                {data.recipes.instructions &&
-                  data.recipes.instructions
-                    .split(`,`)
-                    .map(i => <li key={i}>{i}</li>)}
-              </ul>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.recipe.field_recipe_instruction.value
+                }}
+              />
             </div>
           </div>
         </div>
       </Container>
     </div>
   </Layout>
-)
+);
 
-export default RecipeTemplate
+export default RecipeTemplate;
 
 export const query = graphql`
   query($slug: String!) {
-    recipes(fields: { slug: { eq: $slug } }) {
+    recipe: nodeRecipe(fields: { slug: { eq: $slug } }) {
       title
-      preparationTime
-      difficulty
-      totalTime
-      ingredients
-      instructions
+      field_preparation_time
+      field_difficulty
+      field_cooking_time
+      field_ingredients
+      field_recipe_instruction {
+        value
+      }
       relationships {
-        category {
+        field_recipe_category {
           name
         }
-        image {
-          relationships {
-            imageFile {
-              localFile {
-                childImageSharp {
-                  fluid(maxWidth: 470, maxHeight: 353) {
-                    ...GatsbyImageSharpFluid
-                  }
-                }
+        field_image {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 470, maxHeight: 353) {
+                ...GatsbyImageSharpFluid
               }
             }
           }
@@ -111,4 +109,4 @@ export const query = graphql`
       }
     }
   }
-`
+`;

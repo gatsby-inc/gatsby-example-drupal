@@ -1,23 +1,19 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
-import gray from "gray-percentage"
-import Img from "gatsby-image"
+import React from 'react';
+import { Link, graphql } from 'gatsby';
+import gray from 'gray-percentage';
+import Img from 'gatsby-image';
 
-import Layout from "../layouts"
-import Container from "../components/container"
-import { rhythm } from "../utils/typography"
-import constants from "../utils/constants"
+import Layout from '../layouts';
+import Container from '../components/container';
+import { rhythm } from '../utils/typography';
+import constants from '../utils/constants';
 
 class IndexPage extends React.Component {
   render() {
-    const data = this.props.data
-    const topRecipe = data.topRecipe.edges[0].node
-    const nextTwoPromotedRecipes = data.nextTwoPromotedRecipes.edges.map(
-      edge => edge.node
-    )
-    const nextFourPromotedRecipes = data.nextFourPromotedRecipes.edges.map(
-      edge => edge.node
-    )
+    const data = this.props.data;
+    const topRecipe = data.topRecipe.nodes[0];
+    const nextTwoPromotedRecipes = data.nextTwoPromotedRecipes.nodes;
+    const nextFourPromotedRecipes = data.nextFourPromotedRecipes.nodes;
 
     const FirstPromoted = ({ recipe }) => (
       <Link
@@ -27,16 +23,16 @@ class IndexPage extends React.Component {
           color: `inherit`,
           border: `1px solid ${gray(80)}`,
           marginBottom: rhythm(1),
-          "@media(min-width: 800px)": {
+          '@media(min-width: 800px)': {
             marginBottom: 0,
-            width: `calc(1/2*100% - (1 - 1/2) * ${rhythm(1 / 2)})`,
-          },
+            width: `calc(1/2*100% - (1 - 1/2) * ${rhythm(1 / 2)})`
+          }
         }}
       >
         <div
           css={{
             display: `inline-block`,
-            padding: `${rhythm(3 / 4)} ${rhythm(1)}`,
+            padding: `${rhythm(3 / 4)} ${rhythm(1)}`
           }}
         >
           <h4
@@ -44,7 +40,7 @@ class IndexPage extends React.Component {
               fontFamily: `"Josefin Sans", sans-serif`,
               fontWeight: 400,
               margin: 0,
-              color: gray(50),
+              color: gray(50)
             }}
           >
             Our Recipe Pick
@@ -53,18 +49,17 @@ class IndexPage extends React.Component {
         </div>
         <Img
           fluid={
-            recipe.relationships.image.relationships.imageFile.localFile
-              .childImageSharp.fluid
+            recipe.relationships.field_image.localFile.childImageSharp.fluid
           }
         />
       </Link>
-    )
+    );
 
     const PromotedCard = ({
       recipe,
       square = false,
       columns = 4,
-      marginBottom = rhythm(1 / 2),
+      marginBottom = rhythm(1 / 2)
     }) => (
       <Link
         to={recipe.fields.slug}
@@ -76,25 +71,24 @@ class IndexPage extends React.Component {
           width: `calc(1/${columns}*100% - (1 - 1/${columns}) * ${rhythm(
             1 / 2
           )})`,
-          marginBottom,
+          marginBottom
         }}
       >
         <Img
           fluid={
-            recipe.relationships.image.relationships.imageFile.localFile
-              .childImageSharp.fluid
+            recipe.relationships.field_image.localFile.childImageSharp.fluid
           }
         />
         <div
           css={{
             padding: `${rhythm(3 / 4)} ${rhythm(1)}`,
             width:
-              recipe.relationships.image.relationships.imageFile.localFile
-                .childImageSharp.fluid.width,
+              recipe.relationships.field_image.localFile.childImageSharp.fluid
+                .width,
             height: square
-              ? recipe.relationships.image.relationships.imageFile.localFile
-                  .childImageSharp.fluid.height
-              : undefined,
+              ? recipe.relationships.field_image.localFile.childImageSharp.fluid
+                  .height
+              : undefined
           }}
         >
           <h4
@@ -102,15 +96,15 @@ class IndexPage extends React.Component {
               fontFamily: `"Josefin Sans", sans-serif`,
               fontWeight: 400,
               marginBottom: rhythm(1 / 4),
-              color: gray(50),
+              color: gray(50)
             }}
           >
-            {recipe.relationships.category.name}
+            {recipe.relationships.field_recipe_category[0].name}
           </h4>
           <h3>{recipe.title}</h3>
         </div>
       </Link>
-    )
+    );
 
     return (
       <Layout>
@@ -118,10 +112,10 @@ class IndexPage extends React.Component {
           <Container>
             <div
               css={{
-                "@media(min-width: 800px)": {
+                '@media(min-width: 800px)': {
                   display: `flex`,
-                  justifyContent: `space-between`,
-                },
+                  justifyContent: `space-between`
+                }
               }}
             >
               <FirstPromoted recipe={topRecipe} />
@@ -139,12 +133,12 @@ class IndexPage extends React.Component {
 
           <div
             css={{
-              background: constants.darkYellow,
+              background: constants.darkYellow
             }}
           >
             <Container
               css={{
-                paddingLeft: rhythm(4),
+                paddingLeft: rhythm(4)
               }}
             >
               <div css={{ maxWidth: rhythm(15) }}>
@@ -164,7 +158,7 @@ class IndexPage extends React.Component {
                     color: gray(75, 0, true),
                     padding: `${rhythm(1 / 3)} ${rhythm(2 / 3)}`,
                     lineHeight: 1.3,
-                    cursor: `pointer`,
+                    cursor: `pointer`
                   }}
                 >
                   More Umami
@@ -183,7 +177,7 @@ class IndexPage extends React.Component {
               css={{
                 display: `flex`,
                 justifyContent: `space-between`,
-                flexWrap: `wrap`,
+                flexWrap: `wrap`
               }}
             >
               {nextFourPromotedRecipes.map(recipe => (
@@ -198,7 +192,7 @@ class IndexPage extends React.Component {
 
           <div
             css={{
-              background: constants.darkYellow,
+              background: constants.darkYellow
             }}
           >
             <Container>
@@ -212,32 +206,26 @@ class IndexPage extends React.Component {
           </div>
         </div>
       </Layout>
-    )
+    );
   }
 }
 
-export default IndexPage
+export default IndexPage;
 
 export const pageQuery = graphql`
   query {
-    topRecipe: allRecipes(sort: { fields: [createdAt] }, limit: 1) {
-      edges {
-        node {
-          title
-          fields {
-            slug
-          }
-          relationships {
-            image {
-              relationships {
-                imageFile {
-                  localFile {
-                    childImageSharp {
-                      fluid(maxWidth: 740, maxHeight: 555) {
-                        ...GatsbyImageSharpFluid
-                      }
-                    }
-                  }
+    topRecipe: allNodeRecipe(sort: { fields: [created] }, limit: 1) {
+      nodes {
+        title
+        fields {
+          slug
+        }
+        relationships {
+          field_image {
+            localFile {
+              childImageSharp {
+                fluid(maxWidth: 740, maxHeight: 555) {
+                  ...GatsbyImageSharpFluid
                 }
               }
             }
@@ -245,31 +233,25 @@ export const pageQuery = graphql`
         }
       }
     }
-    nextTwoPromotedRecipes: allRecipes(
-      sort: { fields: [createdAt] }
+    nextTwoPromotedRecipes: allNodeRecipe(
+      sort: { fields: [created] }
       limit: 2
       skip: 1
     ) {
-      edges {
-        node {
-          title
-          fields {
-            slug
+      nodes {
+        title
+        fields {
+          slug
+        }
+        relationships {
+          field_recipe_category {
+            name
           }
-          relationships {
-            category {
-              name
-            }
-            image {
-              relationships {
-                imageFile {
-                  localFile {
-                    childImageSharp {
-                      fluid(maxWidth: 240, maxHeight: 240) {
-                        ...GatsbyImageSharpFluid
-                      }
-                    }
-                  }
+          field_image {
+            localFile {
+              childImageSharp {
+                fluid(maxWidth: 240, maxHeight: 240) {
+                  ...GatsbyImageSharpFluid
                 }
               }
             }
@@ -277,31 +259,25 @@ export const pageQuery = graphql`
         }
       }
     }
-    nextFourPromotedRecipes: allRecipes(
-      sort: { fields: [createdAt] }
+    nextFourPromotedRecipes: allNodeRecipe(
+      sort: { fields: [created] }
       limit: 4
       skip: 3
     ) {
-      edges {
-        node {
-          title
-          fields {
-            slug
+      nodes {
+        title
+        fields {
+          slug
+        }
+        relationships {
+          field_recipe_category {
+            name
           }
-          relationships {
-            category {
-              name
-            }
-            image {
-              relationships {
-                imageFile {
-                  localFile {
-                    childImageSharp {
-                      fluid(maxWidth: 475, maxHeight: 475) {
-                        ...GatsbyImageSharpFluid
-                      }
-                    }
-                  }
+          field_image {
+            localFile {
+              childImageSharp {
+                fluid(maxWidth: 475, maxHeight: 475) {
+                  ...GatsbyImageSharpFluid
                 }
               }
             }
@@ -310,4 +286,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

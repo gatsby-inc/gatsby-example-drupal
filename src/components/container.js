@@ -1,12 +1,12 @@
-import React from "react"
+import React from 'react';
 
-import { rhythm } from "../utils/typography"
+import { rhythm } from '../utils/typography';
 
 export default ({
   children,
   className,
   paddingTop = rhythm(2),
-  paddingBottom = rhythm(2),
+  paddingBottom = rhythm(2)
 }) => (
   <div
     className={className}
@@ -17,9 +17,9 @@ export default ({
       paddingLeft: rhythm(3 / 4),
       paddingRight: rhythm(3 / 4),
       paddingTop,
-      paddingBottom,
+      paddingBottom
     }}
   >
     {children}
   </div>
-)
+);
